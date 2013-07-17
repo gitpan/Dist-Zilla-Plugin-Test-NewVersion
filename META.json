@@ -23,14 +23,14 @@
    "prereqs" : {
       "configure" : {
          "requires" : {
-            "Module::Build::Tiny" : "0.023"
+            "Module::Build::Tiny" : "0.025"
          }
       },
       "develop" : {
          "requires" : {
             "Dist::Zilla" : "4.300035",
             "Dist::Zilla::Plugin::ModuleBuildTiny" : "0",
-            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.009",
+            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.012",
             "Pod::Coverage::TrustPod" : "0",
             "Test::CPAN::Changes" : "0.19",
             "Test::CPAN::Meta" : "0",
@@ -44,6 +44,7 @@
             "Dist::Zilla::File::FromCode" : "0",
             "Dist::Zilla::Role::FileFinderUser" : "0",
             "Dist::Zilla::Role::FileGatherer" : "0",
+            "Dist::Zilla::Role::PrereqSource" : "0",
             "Dist::Zilla::Role::TextTemplate" : "0",
             "Module::Metadata" : "0",
             "Moose" : "0",
@@ -56,12 +57,12 @@
       },
       "test" : {
          "requires" : {
+            "Capture::Tiny" : "0",
             "Cwd" : "0",
             "Dist::Zilla::Tester" : "0",
-            "File::Find" : "0",
             "File::Temp" : "0",
             "Path::Tiny" : "0",
-            "Test::CheckDeps" : "0.002",
+            "Test::CheckDeps" : "0.006",
             "Test::More" : "0.94",
             "Test::Warnings" : "0"
          }
@@ -70,7 +71,7 @@
    "provides" : {
       "Dist::Zilla::Plugin::Test::NewVersion" : {
          "file" : "lib/Dist/Zilla/Plugin/Test/NewVersion.pm",
-         "version" : "0.001"
+         "version" : "0.002"
       }
    },
    "release_status" : "stable",
@@ -86,7 +87,7 @@
          "web" : "https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-NewVersion"
       }
    },
-   "version" : "0.001",
+   "version" : "0.002",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019001"
@@ -120,7 +121,7 @@
          {
             "class" : "Dist::Zilla::Plugin::MetaProvides::Package",
             "name" : "@Author::ETHER/MetaProvides::Package",
-            "version" : "1.14000002"
+            "version" : "1.14000003"
          },
          {
             "class" : "Dist::Zilla::Plugin::MetaConfig",
@@ -170,12 +171,12 @@
          {
             "class" : "Dist::Zilla::Plugin::Test::Compile",
             "name" : "@Author::ETHER/Test::Compile",
-            "version" : "2.002"
+            "version" : "2.006"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::CheckDeps",
             "name" : "@Author::ETHER/Test::CheckDeps",
-            "version" : "0.006"
+            "version" : "0.007"
          },
          {
             "class" : "Dist::Zilla::Plugin::NoTabsTests",
@@ -206,6 +207,11 @@
             "class" : "Dist::Zilla::Plugin::Test::ChangesHasContent",
             "name" : "@Author::ETHER/Test::ChangesHasContent",
             "version" : "0.006"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Test::UnusedVars",
+            "name" : "@Author::ETHER/Test::UnusedVars",
+            "version" : "2.000004"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::MinimumVersion",
@@ -245,7 +251,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Git::Describe",
             "name" : "@Author::ETHER/Git::Describe",
-            "version" : "0.002"
+            "version" : "0.003"
          },
          {
             "class" : "Dist::Zilla::Plugin::PkgVersion",
@@ -280,7 +286,7 @@
                   "type" : "requires"
                }
             },
-            "name" : "@Author::ETHER/Prereqs",
+            "name" : "@Author::ETHER/installer_requirements",
             "version" : "4.300035"
          },
          {
