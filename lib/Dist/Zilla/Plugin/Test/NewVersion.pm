@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::Plugin::Test::NewVersion;
 {
-  $Dist::Zilla::Plugin::Test::NewVersion::VERSION = '0.002';
+  $Dist::Zilla::Plugin::Test::NewVersion::VERSION = '0.003';
 }
-# git description: v0.001-4-g7867d20
+# git description: v0.002-7-g98226aa
 
 BEGIN {
   $Dist::Zilla::Plugin::Test::NewVersion::AUTHORITY = 'cpan:ETHER';
@@ -50,13 +50,13 @@ sub gather_files
     # generate $filename with $content...
 
     require Module::Metadata;
-    require Dist::Zilla::File::FromCode;
-
-    my @files = @{ $self->found_files };
     my @packages = map {
-        Module::Metadata->new_from_file($_->name)->name
-    } @files;
+        open my $fh, '<', \( $_->content )
+            or die 'Cannot create scalarref fh to read from ', $_->name, ": $!";
+        Module::Metadata->new_from_handle($fh, $_->name)->name
+    } @{ $self->found_files };
 
+    require Dist::Zilla::File::FromCode;
     my $file  = Dist::Zilla::File::FromCode->new({
         name => $filename,
         code => sub {
@@ -87,7 +87,7 @@ Dist::Zilla::Plugin::Test::NewVersion - Generate a test that checks a new versio
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 SYNOPSIS
 
@@ -154,6 +154,7 @@ ___[ xt/release/new-version.t ]___
 use strict;
 use warnings FATAL => 'all';
 
+use Test::More 0.88;
 use Encode;
 use LWP::UserAgent;
 use JSON;
@@ -198,4 +199,6 @@ foreach my $pkg (
     ok($bumped, $pkg . ' version is greater than version in index');
     note $message if $message;
 }
+
+done_testing;
 __END__

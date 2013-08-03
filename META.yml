@@ -4,13 +4,12 @@ author:
   - 'Karen Etheridge <ether@cpan.org>'
 build_requires:
   Capture::Tiny: 0
-  Cwd: 0
   Dist::Zilla::Tester: 0
-  File::Temp: 0
   Path::Tiny: 0
   Test::CheckDeps: 0.006
   Test::More: 0.94
   Test::Warnings: 0
+  blib: 0
 configure_requires:
   Module::Build::Tiny: 0.025
 dynamic_config: 0
@@ -28,7 +27,7 @@ no_index:
 provides:
   Dist::Zilla::Plugin::Test::NewVersion:
     file: lib/Dist/Zilla/Plugin/Test/NewVersion.pm
-    version: 0.002
+    version: 0.003
 requires:
   Data::Section: 0.004
   Dist::Zilla::File::FromCode: 0
@@ -40,17 +39,17 @@ requires:
   Moose: 0
   Sub::Exporter::ForMethods: 0
   namespace::autoclean: 0
-  perl: 5.006
+  perl: 5.008
   strict: 0
   warnings: 0
 resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-NewVersion
   homepage: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-NewVersion
   repository: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-NewVersion.git
-version: 0.002
+version: 0.003
 x_Dist_Zilla:
   perl:
-    version: 5.019001
+    version: 5.019002
   plugins:
     -
       class: Dist::Zilla::Plugin::Git::NextVersion
@@ -59,7 +58,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::GithubMeta
       name: '@Author::ETHER/GithubMeta'
-      version: 0.28
+      version: 0.30
     -
       class: Dist::Zilla::Plugin::AutoMetaResources
       name: '@Author::ETHER/AutoMetaResources'
@@ -89,6 +88,10 @@ x_Dist_Zilla:
       name: '@Author::ETHER/ShareDir'
       version: 4.300035
     -
+      class: Dist::Zilla::Plugin::FileFinder::ByName
+      name: '@Author::ETHER/Examples'
+      version: 4.300035
+    -
       class: Dist::Zilla::Plugin::Git::GatherDir
       name: '@Author::ETHER/Git::GatherDir'
       version: 2.014
@@ -114,8 +117,15 @@ x_Dist_Zilla:
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::Test::Compile
+      config:
+        Dist::Zilla::Plugin::Test::Compile:
+          module_finder:
+            - ':InstallModules'
+          script_finder:
+            - ':ExecFiles'
+            - '@Author::ETHER/Examples'
       name: '@Author::ETHER/Test::Compile'
-      version: 2.006
+      version: 2.017
     -
       class: Dist::Zilla::Plugin::Test::CheckDeps
       name: '@Author::ETHER/Test::CheckDeps'
@@ -137,17 +147,13 @@ x_Dist_Zilla:
       name: '@Author::ETHER/Test::Version'
       version: 0.002004
     -
-      class: Dist::Zilla::Plugin::Test::CPAN::Changes
-      name: '@Author::ETHER/Test::CPAN::Changes'
-      version: 0.008
-    -
       class: Dist::Zilla::Plugin::Test::ChangesHasContent
       name: '@Author::ETHER/Test::ChangesHasContent'
       version: 0.006
     -
       class: Dist::Zilla::Plugin::Test::UnusedVars
       name: '@Author::ETHER/Test::UnusedVars'
-      version: 2.000004
+      version: 2.000005
     -
       class: Dist::Zilla::Plugin::Test::MinimumVersion
       name: '@Author::ETHER/Test::MinimumVersion'
@@ -187,7 +193,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::PodWeaver
       name: '@Author::ETHER/PodWeaver'
-      version: 3.101641
+      version: 3.101642
     -
       class: Dist::Zilla::Plugin::NextRelease
       name: '@Author::ETHER/NextRelease'
@@ -224,6 +230,10 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::CopyFilesFromBuild
       name: '@Author::ETHER/CopyFilesFromBuild'
       version: 0.103510
+    -
+      class: Dist::Zilla::Plugin::Run::AfterBuild
+      name: '@Author::ETHER/Run::AfterBuild'
+      version: 0.020
     -
       class: Dist::Zilla::Plugin::RunExtraTests
       name: '@Author::ETHER/RunExtraTests'
@@ -267,7 +277,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::GitHub::Update
       name: '@Author::ETHER/GitHub::Update'
-      version: 0.34
+      version: 0.35
     -
       class: Dist::Zilla::Plugin::Git::Push
       name: '@Author::ETHER/Git::Push'
@@ -283,7 +293,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::Kwalitee
       name: Test::Kwalitee
-      version: 2.03
+      version: 2.04
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':InstallModules'
