@@ -31,6 +31,10 @@
             "Dist::Zilla" : "4.300035",
             "Dist::Zilla::Plugin::ModuleBuildTiny" : "0.004",
             "Dist::Zilla::PluginBundle::Author::ETHER" : "0.016",
+            "Encode" : "0",
+            "JSON" : "0",
+            "LWP::UserAgent" : "0",
+            "Module::Runtime" : "0",
             "Pod::Coverage::TrustPod" : "0",
             "Test::CPAN::Meta" : "0",
             "Test::Pod" : "1.41",
@@ -40,9 +44,10 @@
       "runtime" : {
          "requires" : {
             "Data::Section" : "0.004",
-            "Dist::Zilla::File::FromCode" : "0",
+            "Dist::Zilla::File::InMemory" : "0",
             "Dist::Zilla::Role::FileFinderUser" : "0",
             "Dist::Zilla::Role::FileGatherer" : "0",
+            "Dist::Zilla::Role::FileMunger" : "0",
             "Dist::Zilla::Role::PrereqSource" : "0",
             "Dist::Zilla::Role::TextTemplate" : "0",
             "Module::Metadata" : "0",
@@ -69,7 +74,7 @@
    "provides" : {
       "Dist::Zilla::Plugin::Test::NewVersion" : {
          "file" : "lib/Dist/Zilla/Plugin/Test/NewVersion.pm",
-         "version" : "0.003"
+         "version" : "0.004"
       }
    },
    "release_status" : "stable",
@@ -85,7 +90,7 @@
          "web" : "https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-NewVersion"
       }
    },
-   "version" : "0.003",
+   "version" : "0.004",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019002"
@@ -185,7 +190,7 @@
                }
             },
             "name" : "@Author::ETHER/Test::Compile",
-            "version" : "2.017"
+            "version" : "2.018"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::CheckDeps",
@@ -394,9 +399,19 @@
             "version" : "4.300035"
          },
          {
+            "class" : "Dist::Zilla::Plugin::GatherDir::Template",
+            "name" : "file-from-code test",
+            "version" : "4.300035"
+         },
+         {
             "class" : "Dist::Zilla::Plugin::Test::Kwalitee",
             "name" : "Test::Kwalitee",
             "version" : "2.04"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Test::NewVersion",
+            "name" : "Test::NewVersion",
+            "version" : "0.003"
          },
          {
             "class" : "Dist::Zilla::Plugin::FinderCode",

@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::Plugin::Test::NewVersion;
 {
-  $Dist::Zilla::Plugin::Test::NewVersion::VERSION = '0.003';
+  $Dist::Zilla::Plugin::Test::NewVersion::VERSION = '0.004';
 }
-# git description: v0.002-7-g98226aa
+# git description: v0.003-8-g10fa14a
 
 BEGIN {
   $Dist::Zilla::Plugin::Test::NewVersion::AUTHORITY = 'cpan:ETHER';
@@ -14,6 +14,7 @@ BEGIN {
 use Moose;
 with
     'Dist::Zilla::Role::FileGatherer',
+    'Dist::Zilla::Role::FileMunger',
     'Dist::Zilla::Role::TextTemplate',
     'Dist::Zilla::Role::FileFinderUser' => {
         default_finders => [ ':InstallModules' ],
@@ -34,6 +35,7 @@ sub register_prereqs
             type  => 'requires',
             phase => 'develop',
         },
+        'Test::More' => '0.88',
         'Encode' => '0',
         'LWP::UserAgent' => '0',
         'JSON' => '0',
@@ -41,13 +43,34 @@ sub register_prereqs
     );
 }
 
+has _test_file => (
+    is => 'ro', isa => 'Dist::Zilla::File::InMemory',
+    lazy => 1,
+    default => sub {
+        my $self = shift;
+        my $filename = 'xt/release/new-version.t';
+        use Dist::Zilla::File::InMemory;
+        Dist::Zilla::File::InMemory->new({
+            name => $filename,
+            content => ${$self->section_data($filename)},
+        });
+    },
+);
+
 sub gather_files
 {
     my $self = shift;
 
-    my $filename = 'xt/release/new-version.t';
+    $self->add_file($self->_test_file);
+    return;
+}
 
-    # generate $filename with $content...
+sub munge_file
+{
+    my ($self, $file) = @_;
+
+    # cannot check $file by name, as the file may have been moved by [ExtraTests].
+    return unless $file eq $self->_test_file;
 
     require Module::Metadata;
     my @packages = map {
@@ -56,24 +79,18 @@ sub gather_files
         Module::Metadata->new_from_handle($fh, $_->name)->name
     } @{ $self->found_files };
 
-    require Dist::Zilla::File::FromCode;
-    my $file  = Dist::Zilla::File::FromCode->new({
-        name => $filename,
-        code => sub {
-            my $content = $self->fill_in_string(
-                ${$self->section_data($filename)},
-                {
-                    dist => \($self->zilla),
-                    packages => \@packages,
-                },
-            );
-            $content;
-        },
-    });
-
-    $self->add_file($file);
+    $file->content(
+        $self->fill_in_string(
+            $file->content,
+            {
+                dist => \($self->zilla),
+                packages => \@packages,
+            },
+        )
+    );
     return;
 }
+__PACKAGE__->meta->make_immutable;
 
 =pod
 
@@ -87,7 +104,7 @@ Dist::Zilla::Plugin::Test::NewVersion - Generate a test that checks a new versio
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 SYNOPSIS
 
@@ -111,7 +128,7 @@ version), which is what we're testing for.  You can, however, explicitly
 exclude some files from being checked, by passing your own
 L<FileFinder|Dist::Zilla::Role::FileFinderUser/default_finders>.
 
-=for Pod::Coverage register_prereqs gather_files
+=for Pod::Coverage register_prereqs gather_files munge_file
 
 =head1 CONFIGURATION
 

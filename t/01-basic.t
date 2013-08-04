@@ -17,7 +17,7 @@ my $file = path($build_dir, 'xt', 'release', 'new-version.t');
 ok( -e $file, 'test created');
 
 my $contents = $file->slurp;
-like($file->slurp, qr/q{$_}/, "test checks the $_ module") foreach qw(Foo Bar);
+like($file->slurp, qr/q{\Q$_\E}/, "test checks the $_ module") foreach qw(Foo Bar::Baz);
 
 # run the tests
 my $new_lib = path($build_dir, 'lib')->stringify;

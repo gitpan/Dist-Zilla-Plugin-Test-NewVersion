@@ -27,12 +27,13 @@ no_index:
 provides:
   Dist::Zilla::Plugin::Test::NewVersion:
     file: lib/Dist/Zilla/Plugin/Test/NewVersion.pm
-    version: 0.003
+    version: 0.004
 requires:
   Data::Section: 0.004
-  Dist::Zilla::File::FromCode: 0
+  Dist::Zilla::File::InMemory: 0
   Dist::Zilla::Role::FileFinderUser: 0
   Dist::Zilla::Role::FileGatherer: 0
+  Dist::Zilla::Role::FileMunger: 0
   Dist::Zilla::Role::PrereqSource: 0
   Dist::Zilla::Role::TextTemplate: 0
   Module::Metadata: 0
@@ -46,7 +47,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-NewVersion
   homepage: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-NewVersion
   repository: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-NewVersion.git
-version: 0.003
+version: 0.004
 x_Dist_Zilla:
   perl:
     version: 5.019002
@@ -125,7 +126,7 @@ x_Dist_Zilla:
             - ':ExecFiles'
             - '@Author::ETHER/Examples'
       name: '@Author::ETHER/Test::Compile'
-      version: 2.017
+      version: 2.018
     -
       class: Dist::Zilla::Plugin::Test::CheckDeps
       name: '@Author::ETHER/Test::CheckDeps'
@@ -291,9 +292,17 @@ x_Dist_Zilla:
       name: '@Author::ETHER/ConfirmRelease'
       version: 4.300035
     -
+      class: Dist::Zilla::Plugin::GatherDir::Template
+      name: 'file-from-code test'
+      version: 4.300035
+    -
       class: Dist::Zilla::Plugin::Test::Kwalitee
       name: Test::Kwalitee
       version: 2.04
+    -
+      class: Dist::Zilla::Plugin::Test::NewVersion
+      name: Test::NewVersion
+      version: 0.003
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':InstallModules'

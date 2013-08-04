@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-# This test was generated via Dist::Zilla::Plugin::Test::Compile 2.017
+# This test was generated via Dist::Zilla::Plugin::Test::Compile 2.018
 
 use Test::More 0.94;
 
@@ -30,9 +30,9 @@ for my $lib (@module_files)
     push @warnings, $stderr if $stderr;
 }
 
+
+
 is(scalar(@warnings), 0, 'no warnings found') if $ENV{AUTHOR_TESTING};
-
-
 
 BAIL_OUT("Compilation problems") if !Test::More->builder->is_passing;
 
