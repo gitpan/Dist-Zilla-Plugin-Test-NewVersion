@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::Plugin::Test::NewVersion;
 {
-  $Dist::Zilla::Plugin::Test::NewVersion::VERSION = '0.004';
+  $Dist::Zilla::Plugin::Test::NewVersion::VERSION = '0.005';
 }
-# git description: v0.003-8-g10fa14a
+# git description: v0.004-2-g25f93e2
 
 BEGIN {
   $Dist::Zilla::Plugin::Test::NewVersion::AUTHORITY = 'cpan:ETHER';
@@ -104,7 +104,7 @@ Dist::Zilla::Plugin::Test::NewVersion - Generate a test that checks a new versio
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 SYNOPSIS
 

@@ -3,6 +3,7 @@ abstract: 'Generate a test that checks a new version has been assigned'
 author:
   - 'Karen Etheridge <ether@cpan.org>'
 build_requires:
+  CPAN::Meta::Check: 0.007
   Capture::Tiny: 0
   Dist::Zilla::Tester: 0
   Path::Tiny: 0
@@ -27,7 +28,7 @@ no_index:
 provides:
   Dist::Zilla::Plugin::Test::NewVersion:
     file: lib/Dist/Zilla/Plugin/Test/NewVersion.pm
-    version: 0.004
+    version: 0.005
 requires:
   Data::Section: 0.004
   Dist::Zilla::File::InMemory: 0
@@ -47,7 +48,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-NewVersion
   homepage: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-NewVersion
   repository: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-NewVersion.git
-version: 0.004
+version: 0.005
 x_Dist_Zilla:
   perl:
     version: 5.019002
@@ -211,6 +212,14 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::Prereqs
       config:
         Dist::Zilla::Plugin::Prereqs:
+          phase: test
+          type: requires
+      name: '@Author::ETHER/Test::CheckDeps, indirect'
+      version: 4.300035
+    -
+      class: Dist::Zilla::Plugin::Prereqs
+      config:
+        Dist::Zilla::Plugin::Prereqs:
           phase: develop
           type: requires
       name: '@Author::ETHER/installer_requirements'
@@ -292,17 +301,13 @@ x_Dist_Zilla:
       name: '@Author::ETHER/ConfirmRelease'
       version: 4.300035
     -
-      class: Dist::Zilla::Plugin::GatherDir::Template
-      name: 'file-from-code test'
-      version: 4.300035
-    -
       class: Dist::Zilla::Plugin::Test::Kwalitee
       name: Test::Kwalitee
       version: 2.04
     -
       class: Dist::Zilla::Plugin::Test::NewVersion
       name: Test::NewVersion
-      version: 0.003
+      version: 0.004
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':InstallModules'

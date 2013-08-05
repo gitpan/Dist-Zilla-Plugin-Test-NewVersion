@@ -15,7 +15,6 @@ t/02-file-from-code.t
 t/corpus/basic/dist.ini
 t/corpus/basic/lib/Bar/Baz.pm
 t/corpus/basic/lib/Foo.pm
-t/corpus/file-from-code/build_template/dist.ini
 t/corpus/file-from-code/dist.ini
 t/corpus/file-from-code/lib/Foo.pm
 weaver.ini
