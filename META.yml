@@ -28,7 +28,7 @@ no_index:
 provides:
   Dist::Zilla::Plugin::Test::NewVersion:
     file: lib/Dist/Zilla/Plugin/Test/NewVersion.pm
-    version: 0.005
+    version: 0.006
 requires:
   Data::Section: 0.004
   Dist::Zilla::File::InMemory: 0
@@ -48,7 +48,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-NewVersion
   homepage: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-NewVersion
   repository: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-NewVersion.git
-version: 0.005
+version: 0.006
 x_Dist_Zilla:
   perl:
     version: 5.019002
@@ -307,7 +307,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::NewVersion
       name: Test::NewVersion
-      version: 0.004
+      version: 0.005
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':InstallModules'
@@ -335,6 +335,6 @@ x_Dist_Zilla:
   zilla:
     class: Dist::Zilla::Dist::Builder
     config:
-      is_trial: 0
+      is_trial: 1
     version: 4.300035
 x_authority: cpan:ETHER

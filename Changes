@@ -1,5 +1,9 @@
 Revision history for Dist-Zilla-Plugin-Test-NewVersion
 
+0.006-TRIAL  2013-08-05 21:52:05 PDT-0700 (Karen Etheridge)
+          - dev release with more detailed test description to see why many
+            cpantesters machines are failing
+
 0.005     2013-08-04 22:59:22 PDT-0700 (Karen Etheridge)
           - fix wrong-headed test that will *always* fail when testing this
             distribution after the PAUSE index has updated (double doh!)

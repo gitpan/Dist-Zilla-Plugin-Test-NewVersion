@@ -76,10 +76,10 @@
    "provides" : {
       "Dist::Zilla::Plugin::Test::NewVersion" : {
          "file" : "lib/Dist/Zilla/Plugin/Test/NewVersion.pm",
-         "version" : "0.005"
+         "version" : "0.006"
       }
    },
-   "release_status" : "stable",
+   "release_status" : "testing",
    "resources" : {
       "bugtracker" : {
          "mailto" : "bug-Dist-Zilla-Plugin-Test-NewVersion@rt.cpan.org",
@@ -92,7 +92,7 @@
          "web" : "https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-NewVersion"
       }
    },
-   "version" : "0.005",
+   "version" : "0.006",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019002"
@@ -419,7 +419,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Test::NewVersion",
             "name" : "Test::NewVersion",
-            "version" : "0.004"
+            "version" : "0.005"
          },
          {
             "class" : "Dist::Zilla::Plugin::FinderCode",
@@ -455,7 +455,7 @@
       "zilla" : {
          "class" : "Dist::Zilla::Dist::Builder",
          "config" : {
-            "is_trial" : "0"
+            "is_trial" : "1"
          },
          "version" : "4.300035"
       }

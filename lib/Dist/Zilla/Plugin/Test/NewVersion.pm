@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::Plugin::Test::NewVersion;
 {
-  $Dist::Zilla::Plugin::Test::NewVersion::VERSION = '0.005';
+  $Dist::Zilla::Plugin::Test::NewVersion::VERSION = '0.006'; # TRIAL
 }
-# git description: v0.004-2-g25f93e2
+# git description: v0.005-2-g1450e77
 
 BEGIN {
   $Dist::Zilla::Plugin::Test::NewVersion::AUTHORITY = 'cpan:ETHER';
@@ -104,7 +104,7 @@ Dist::Zilla::Plugin::Test::NewVersion - Generate a test that checks a new versio
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 
@@ -213,8 +213,9 @@ foreach my $pkg (
 )
 {
     my ($bumped, $message) = version_is_bumped($pkg);
-    ok($bumped, $pkg . ' version is greater than version in index');
-    note $message if $message;
+    ok($bumped, $pkg . ' version is greater than version in index'
+        . ( $message ? ( '(' . $message . ')' ) : '' )
+    );
 }
 
 done_testing;
