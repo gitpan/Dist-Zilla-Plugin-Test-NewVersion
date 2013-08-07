@@ -65,6 +65,10 @@
             "CPAN::Meta::Check" : "0.007",
             "Capture::Tiny" : "0",
             "Dist::Zilla::Tester" : "0",
+            "Encode" : "0",
+            "JSON" : "0",
+            "LWP::UserAgent" : "0",
+            "Module::Runtime" : "0",
             "Path::Tiny" : "0",
             "Test::CheckDeps" : "0.006",
             "Test::More" : "0.94",
@@ -76,10 +80,10 @@
    "provides" : {
       "Dist::Zilla::Plugin::Test::NewVersion" : {
          "file" : "lib/Dist/Zilla/Plugin/Test/NewVersion.pm",
-         "version" : "0.006"
+         "version" : "0.007"
       }
    },
-   "release_status" : "testing",
+   "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
          "mailto" : "bug-Dist-Zilla-Plugin-Test-NewVersion@rt.cpan.org",
@@ -92,7 +96,7 @@
          "web" : "https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-NewVersion"
       }
    },
-   "version" : "0.006",
+   "version" : "0.007",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019002"
@@ -412,6 +416,17 @@
             "version" : "4.300035"
          },
          {
+            "class" : "Dist::Zilla::Plugin::Prereqs",
+            "config" : {
+               "Dist::Zilla::Plugin::Prereqs" : {
+                  "phase" : "test",
+                  "type" : "requires"
+               }
+            },
+            "name" : "TestRequires",
+            "version" : "4.300035"
+         },
+         {
             "class" : "Dist::Zilla::Plugin::Test::Kwalitee",
             "name" : "Test::Kwalitee",
             "version" : "2.04"
@@ -419,7 +434,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Test::NewVersion",
             "name" : "Test::NewVersion",
-            "version" : "0.005"
+            "version" : "0.006"
          },
          {
             "class" : "Dist::Zilla::Plugin::FinderCode",
@@ -455,7 +470,7 @@
       "zilla" : {
          "class" : "Dist::Zilla::Dist::Builder",
          "config" : {
-            "is_trial" : "1"
+            "is_trial" : "0"
          },
          "version" : "4.300035"
       }

@@ -43,8 +43,9 @@ foreach my $pkg (
 )
 {
     my ($bumped, $message) = version_is_bumped($pkg);
-    ok($bumped, $pkg . ' version is greater than version in index');
-    note $message if $message;
+    ok($bumped, $pkg . ' version is greater than version in index'
+        . ( $message ? ( '(' . $message . ')' ) : '' )
+    );
 }
 
 done_testing;

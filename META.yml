@@ -6,6 +6,10 @@ build_requires:
   CPAN::Meta::Check: 0.007
   Capture::Tiny: 0
   Dist::Zilla::Tester: 0
+  Encode: 0
+  JSON: 0
+  LWP::UserAgent: 0
+  Module::Runtime: 0
   Path::Tiny: 0
   Test::CheckDeps: 0.006
   Test::More: 0.94
@@ -28,7 +32,7 @@ no_index:
 provides:
   Dist::Zilla::Plugin::Test::NewVersion:
     file: lib/Dist/Zilla/Plugin/Test/NewVersion.pm
-    version: 0.006
+    version: 0.007
 requires:
   Data::Section: 0.004
   Dist::Zilla::File::InMemory: 0
@@ -48,7 +52,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-NewVersion
   homepage: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-NewVersion
   repository: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-NewVersion.git
-version: 0.006
+version: 0.007
 x_Dist_Zilla:
   perl:
     version: 5.019002
@@ -301,13 +305,21 @@ x_Dist_Zilla:
       name: '@Author::ETHER/ConfirmRelease'
       version: 4.300035
     -
+      class: Dist::Zilla::Plugin::Prereqs
+      config:
+        Dist::Zilla::Plugin::Prereqs:
+          phase: test
+          type: requires
+      name: TestRequires
+      version: 4.300035
+    -
       class: Dist::Zilla::Plugin::Test::Kwalitee
       name: Test::Kwalitee
       version: 2.04
     -
       class: Dist::Zilla::Plugin::Test::NewVersion
       name: Test::NewVersion
-      version: 0.005
+      version: 0.006
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':InstallModules'
@@ -335,6 +347,6 @@ x_Dist_Zilla:
   zilla:
     class: Dist::Zilla::Dist::Builder
     config:
-      is_trial: 1
+      is_trial: 0
     version: 4.300035
 x_authority: cpan:ETHER

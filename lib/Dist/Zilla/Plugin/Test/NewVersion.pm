@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::Plugin::Test::NewVersion;
 {
-  $Dist::Zilla::Plugin::Test::NewVersion::VERSION = '0.006'; # TRIAL
+  $Dist::Zilla::Plugin::Test::NewVersion::VERSION = '0.007';
 }
-# git description: v0.005-2-g1450e77
+# git description: v0.006-TRIAL-4-ge4d9591
 
 BEGIN {
   $Dist::Zilla::Plugin::Test::NewVersion::AUTHORITY = 'cpan:ETHER';
@@ -23,8 +23,7 @@ with
 ;
 use Sub::Exporter::ForMethods 'method_installer';
 use Data::Section 0.004 # fixed header_re
-    { installer => Sub::Exporter::ForMethods::method_installer },
-    '-setup';
+    { installer => method_installer }, '-setup';
 use namespace::autoclean;
 
 sub register_prereqs
@@ -104,7 +103,7 @@ Dist::Zilla::Plugin::Test::NewVersion - Generate a test that checks a new versio
 
 =head1 VERSION
 
-version 0.006
+version 0.007
 
 =head1 SYNOPSIS
 
@@ -205,7 +204,7 @@ sub version_is_bumped
     my $indexed_version = version->parse($payload->[0]{mod_vers});
     return (1) if $indexed_version < $current_version;
 
-    return (0, $pkg . ' is indexed at: ' . $indexed_version . '; local version is ' . $current_version);
+    return (0, $pkg . ' is indexed at ' . $indexed_version . '; local version is ' . $current_version);
 }
 
 foreach my $pkg (
@@ -214,7 +213,7 @@ foreach my $pkg (
 {
     my ($bumped, $message) = version_is_bumped($pkg);
     ok($bumped, $pkg . ' version is greater than version in index'
-        . ( $message ? ( '(' . $message . ')' ) : '' )
+        . ( $message ? (' (' . $message . ')') : '' )
     );
 }
 
