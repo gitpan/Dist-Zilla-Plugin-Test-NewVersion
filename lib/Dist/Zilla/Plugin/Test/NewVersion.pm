@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::Plugin::Test::NewVersion;
 {
-  $Dist::Zilla::Plugin::Test::NewVersion::VERSION = '0.007';
+  $Dist::Zilla::Plugin::Test::NewVersion::VERSION = '0.008';
 }
-# git description: v0.006-TRIAL-4-ge4d9591
+# git description: v0.007-7-g7bee066
 
 BEGIN {
   $Dist::Zilla::Plugin::Test::NewVersion::AUTHORITY = 'cpan:ETHER';
@@ -38,7 +38,9 @@ sub register_prereqs
         'Encode' => '0',
         'LWP::UserAgent' => '0',
         'JSON' => '0',
-        'Module::Runtime' => '0',
+        'Module::Metadata' => '0',
+        'List::Util' => '0',
+        'CPAN::Meta' => '2.120920',
     );
 }
 
@@ -71,19 +73,12 @@ sub munge_file
     # cannot check $file by name, as the file may have been moved by [ExtraTests].
     return unless $file eq $self->_test_file;
 
-    require Module::Metadata;
-    my @packages = map {
-        open my $fh, '<', \( $_->content )
-            or die 'Cannot create scalarref fh to read from ', $_->name, ": $!";
-        Module::Metadata->new_from_handle($fh, $_->name)->name
-    } @{ $self->found_files };
-
     $file->content(
         $self->fill_in_string(
             $file->content,
             {
                 dist => \($self->zilla),
-                packages => \@packages,
+                files => [ map { $_->name } @{ $self->found_files } ],
             },
         )
     );
@@ -103,7 +98,7 @@ Dist::Zilla::Plugin::Test::NewVersion - Generate a test that checks a new versio
 
 =head1 VERSION
 
-version 0.007
+version 0.008
 
 =head1 SYNOPSIS
 
@@ -174,47 +169,68 @@ use Test::More 0.88;
 use Encode;
 use LWP::UserAgent;
 use JSON;
-use Module::Runtime 'use_module';
+use Module::Metadata;
+use List::Util 'first';
+use CPAN::Meta 2.120920;
+
+# 'provides' field from dist metadata, if needed
+my $dist_provides;
 
 # returns bool, detailed message
 sub version_is_bumped
 {
-    my $pkg = shift;
+    my ($module_metadata, $pkg) = @_;
 
     my $ua = LWP::UserAgent->new(keep_alive => 1);
     $ua->env_proxy;
 
     my $res = $ua->get("http://cpanidx.org/cpanidx/json/mod/$pkg");
-    unless ($res->is_success) {
-        return (1, $pkg . ' not found in index - first release, perhaps?');
-    }
+    return (0, 'index could not be queried?') if not $res->is_success;
 
     # JSON wants UTF-8 bytestreams, so we need to re-encode no matter what
     # encoding we got. -- rjbs, 2011-08-18 (in Dist::Zilla)
     my $json_octets = Encode::encode_utf8($res->decoded_content);
     my $payload = JSON::->new->decode($json_octets);
 
-    unless (\@$payload) {
-        return (0, 'no valid JSON returned');
-    }
+    return (0, 'no valid JSON returned') unless \@$payload;
 
-    my $current_version = use_module($pkg)->VERSION;
-    return (0, $pkg . ' version is not set') if not defined $current_version;
+    return (1, 'not indexed') if not defined $payload->[0]{mod_vers};
+    return (1, 'VERSION is not set in index') if $payload->[0]{mod_vers} eq 'undef';
 
     my $indexed_version = version->parse($payload->[0]{mod_vers});
-    return (1) if $indexed_version < $current_version;
+    my $current_version = $module_metadata->version($pkg);
 
-    return (0, $pkg . ' is indexed at ' . $indexed_version . '; local version is ' . $current_version);
+    if (not defined $current_version)
+    {
+        $dist_provides ||= do {
+            my $metafile = first { -e $_ } qw(MYMETA.json MYMETA.yml META.json META.yml);
+            my $dist_metadata = $metafile ? CPAN::Meta->load_file($metafile) : undef;
+            $dist_metadata->provides if $dist_metadata;
+        };
+
+        $current_version = $dist_provides->{$pkg}{version};
+        return (0, 'VERSION is not set; indexed version is ' . $indexed_version)
+            if not $dist_provides or not $current_version;
+    }
+
+    return (
+        $indexed_version < $current_version,
+        'indexed at ' . $indexed_version . '; local version is ' . $current_version,
+    );
 }
 
-foreach my $pkg (
-{{ join(",\n", map { '    q{' . $_ . '}' } @packages) }}
+foreach my $filename (
+{{ join(",\n", map { '    q{' . $_ . '}' } @files) }}
 )
 {
-    my ($bumped, $message) = version_is_bumped($pkg);
-    ok($bumped, $pkg . ' version is greater than version in index'
-        . ( $message ? (' (' . $message . ')') : '' )
-    );
+    my $module_metadata = Module::Metadata->new_from_file($filename);
+    foreach my $pkg ($module_metadata->packages_inside)
+    {
+        my ($bumped, $message) = version_is_bumped($module_metadata, $pkg);
+        ok($bumped, $pkg . ' (' . $filename . ') VERSION is ok'
+            . ( $message ? (' (' . $message . ')') : '' )
+        );
+    }
 }
 
 done_testing;

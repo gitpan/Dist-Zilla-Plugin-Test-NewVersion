@@ -1,5 +1,14 @@
 Revision history for Dist-Zilla-Plugin-Test-NewVersion
 
+0.008     2013-08-11 12:56:58 PDT-0700 (Karen Etheridge)
+          - now properly handle .pod files, and others where the package name
+            does not directly correspond with the equivalent .pm, by testing
+            by filename rather than package name
+          - now correctly handling case where an indexed module has an undef
+            version (always documented as considered acceptable)
+          - also respect 'provides' metadata for the module's new version, if
+            present and VERSION not set directly in the package
+
 0.007     2013-08-06 21:05:04 PDT-0700 (Karen Etheridge)
           - now properly injecting prereqs for things used by our tests that
             were not being picked up automatically

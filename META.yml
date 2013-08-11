@@ -5,20 +5,25 @@ author:
 build_requires:
   CPAN::Meta::Check: 0.007
   Capture::Tiny: 0
+  Cwd: 0
+  Data::Dumper: 0
+  Dist::Zilla::Role::MetaProvider: 0
   Dist::Zilla::Tester: 0
   Encode: 0
   JSON: 0
   LWP::UserAgent: 0
-  Module::Runtime: 0
+  Module::Metadata: 0
   Path::Tiny: 0
   Test::CheckDeps: 0.006
+  Test::Deep: 0
   Test::More: 0.94
+  Test::Tester: 0.108
   Test::Warnings: 0
   blib: 0
 configure_requires:
   Module::Build::Tiny: 0.025
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.131560'
+generated_by: 'Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.132140'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -32,7 +37,7 @@ no_index:
 provides:
   Dist::Zilla::Plugin::Test::NewVersion:
     file: lib/Dist/Zilla/Plugin/Test/NewVersion.pm
-    version: 0.007
+    version: 0.008
 requires:
   Data::Section: 0.004
   Dist::Zilla::File::InMemory: 0
@@ -41,18 +46,17 @@ requires:
   Dist::Zilla::Role::FileMunger: 0
   Dist::Zilla::Role::PrereqSource: 0
   Dist::Zilla::Role::TextTemplate: 0
-  Module::Metadata: 0
   Moose: 0
   Sub::Exporter::ForMethods: 0
   namespace::autoclean: 0
-  perl: 5.008
+  perl: 5.006
   strict: 0
   warnings: 0
 resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-NewVersion
   homepage: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-NewVersion
   repository: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-NewVersion.git
-version: 0.007
+version: 0.008
 x_Dist_Zilla:
   perl:
     version: 5.019002
@@ -319,7 +323,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::NewVersion
       name: Test::NewVersion
-      version: 0.006
+      version: 0.007
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':InstallModules'

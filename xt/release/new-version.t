@@ -35,7 +35,7 @@ sub version_is_bumped
     my $indexed_version = version->parse($payload->[0]{mod_vers});
     return (1) if $indexed_version < $current_version;
 
-    return (0, $pkg . ' is indexed at: ' . $indexed_version . '; local version is ' . $current_version);
+    return (0, $pkg . ' is indexed at ' . $indexed_version . '; local version is ' . $current_version);
 }
 
 foreach my $pkg (
@@ -44,7 +44,7 @@ foreach my $pkg (
 {
     my ($bumped, $message) = version_is_bumped($pkg);
     ok($bumped, $pkg . ' version is greater than version in index'
-        . ( $message ? ( '(' . $message . ')' ) : '' )
+        . ( $message ? (' (' . $message . ')') : '' )
     );
 }
 
