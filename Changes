@@ -1,5 +1,12 @@
 Revision history for Dist-Zilla-Plugin-Test-NewVersion
 
+0.009     2013-10-20 03:12:51Z (Karen Etheridge)
+          - now properly handling filenames with special characters
+          - now using HTTP::Tiny to fetch index data from PAUSE
+          - warnings tests bypassed during installation
+          - include in the generated test the exact version of the plugin that
+            generated the test
+
 0.008     2013-08-11 12:56:58 PDT-0700 (Karen Etheridge)
           - now properly handle .pod files, and others where the package name
             does not directly correspond with the equivalent .pm, by testing

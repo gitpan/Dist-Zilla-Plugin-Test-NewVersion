@@ -2,13 +2,13 @@ use strict;
 use warnings FATAL => 'all';
 
 use Test::More;
-use Test::Warnings;
-use Dist::Zilla::Tester;
+use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
+use Test::DZil;
 use Path::Tiny;
 use Cwd 'getcwd';
 
 # build fake dist
-my $tzil = Dist::Zilla::Tester->from_config({
+my $tzil = Builder->from_config({
     dist_root => path(qw(t corpus file-from-code)),
 });
 $tzil->build;
@@ -18,7 +18,11 @@ my $file = path($build_dir, 'xt', 'release', 'new-version.t');
 ok( -e $file, 'test created');
 
 my $contents = $file->slurp;
-like($file->slurp, qr/q{\Q$_\E}/, "test checks the $_ module") foreach qw(lib/Foo.pm lib/ExtUtils/MakeMaker.pm);
+like($file->slurp, qr/"\Q$_\E"/, "test checks the $_ module")
+    foreach map { quotemeta } qw(
+        lib/Foo.pm
+        lib/ExtUtils/MakeMaker.pm
+    );
 
 # run the tests
 

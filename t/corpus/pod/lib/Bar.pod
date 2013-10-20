@@ -1,2 +1,9 @@
-package Bar;
-1;
+=head1 NAME
+
+Bar
+
+=head1 DESCRIPTION
+
+Stuff
+
+=cut

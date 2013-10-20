@@ -1,14 +1,14 @@
 use strict;
 use warnings;
 package Dist::Zilla::Plugin::Test::NewVersion;
-{
-  $Dist::Zilla::Plugin::Test::NewVersion::VERSION = '0.008';
-}
-# git description: v0.007-7-g7bee066
-
 BEGIN {
   $Dist::Zilla::Plugin::Test::NewVersion::AUTHORITY = 'cpan:ETHER';
 }
+{
+  $Dist::Zilla::Plugin::Test::NewVersion::VERSION = '0.009';
+}
+# git description: v0.008-16-g1594bb3
+
 # ABSTRACT: Generate a test that checks a new version has been assigned
 
 use Moose;
@@ -36,8 +36,9 @@ sub register_prereqs
         },
         'Test::More' => '0.88',
         'Encode' => '0',
-        'LWP::UserAgent' => '0',
+        'HTTP::Tiny' => '0',
         'JSON' => '0',
+        'version' => '0',
         'Module::Metadata' => '0',
         'List::Util' => '0',
         'CPAN::Meta' => '2.120920',
@@ -78,6 +79,7 @@ sub munge_file
             $file->content,
             {
                 dist => \($self->zilla),
+                plugin => \$self,
                 files => [ map { $_->name } @{ $self->found_files } ],
             },
         )
@@ -88,7 +90,7 @@ __PACKAGE__->meta->make_immutable;
 
 =pod
 
-=encoding utf-8
+=encoding UTF-8
 
 =for :stopwords Karen Etheridge FileFinder irc
 
@@ -98,7 +100,7 @@ Dist::Zilla::Plugin::Test::NewVersion - Generate a test that checks a new versio
 
 =head1 VERSION
 
-version 0.008
+version 0.009
 
 =head1 SYNOPSIS
 
@@ -147,6 +149,16 @@ Bugs may be submitted through L<the RT bug tracker|https://rt.cpan.org/Public/Di
 (or L<bug-Dist-Zilla-Plugin-Test-NewVersion@rt.cpan.org|mailto:bug-Dist-Zilla-Plugin-Test-NewVersion@rt.cpan.org>).
 I am also usually active on irc, as 'ether' at C<irc.perl.org>.
 
+=head1 SEE ALSO
+
+=over 4
+
+=item *
+
+L<Dist::Zilla::Plugin::CheckVersionIncrement>
+
+=back
+
 =head1 AUTHOR
 
 Karen Etheridge <ether@cpan.org>
@@ -162,13 +174,16 @@ the same terms as the Perl 5 programming language system itself.
 
 __DATA__
 ___[ xt/release/new-version.t ]___
+# this test was generated with {{ ref($plugin) . ' ' . ($plugin->VERSION || '<self>') }}
+
 use strict;
 use warnings FATAL => 'all';
 
 use Test::More 0.88;
 use Encode;
-use LWP::UserAgent;
+use HTTP::Tiny;
 use JSON;
+use version;
 use Module::Metadata;
 use List::Util 'first';
 use CPAN::Meta 2.120920;
@@ -181,18 +196,16 @@ sub version_is_bumped
 {
     my ($module_metadata, $pkg) = @_;
 
-    my $ua = LWP::UserAgent->new(keep_alive => 1);
-    $ua->env_proxy;
-
-    my $res = $ua->get("http://cpanidx.org/cpanidx/json/mod/$pkg");
-    return (0, 'index could not be queried?') if not $res->is_success;
+    my $res = HTTP::Tiny->new->get("http://cpanidx.org/cpanidx/json/mod/$pkg");
+    return (0, 'index could not be queried?') if not $res->{success};
 
     # JSON wants UTF-8 bytestreams, so we need to re-encode no matter what
-    # encoding we got. -- rjbs, 2011-08-18 (in Dist::Zilla)
-    my $json_octets = Encode::encode_utf8($res->decoded_content);
+    # encoding we got. -- rjbs, 2011-08-18 (in
+    # Dist::Zilla::Plugin::CheckPrereqsIndexed)
+    my $json_octets = Encode::encode_utf8($res->{content});
     my $payload = JSON::->new->decode($json_octets);
 
-    return (0, 'no valid JSON returned') unless \@$payload;
+    return (0, 'no valid JSON returned') unless $payload;
 
     return (1, 'not indexed') if not defined $payload->[0]{mod_vers};
     return (1, 'VERSION is not set in index') if $payload->[0]{mod_vers} eq 'undef';
@@ -220,7 +233,7 @@ sub version_is_bumped
 }
 
 foreach my $filename (
-{{ join(",\n", map { '    q{' . $_ . '}' } @files) }}
+{{ join(",\n", map { '    "' . quotemeta($_) . '"' } sort @files) }}
 )
 {
     my $module_metadata = Module::Metadata->new_from_file($filename);
